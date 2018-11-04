@@ -6,69 +6,62 @@ $('#start').on('click', function () {
 })
 //setting up click event so clicking on the button should tell if user chose the correct button or not.
 /***using document selector so check the entire document. .answer-button dynamically created. */
-$(document).on('click', '.answer-button', function (e) {
+$(document).on('click', ".answer-button", function (e) {
     triviaGame.compareUserclick(e);
 })
 //click event for Restart Button
-$(document).on('click','#reset', function(){
+
+$(document).on('click','#reset',function(){
     triviaGame.resetGame();
 })
-//****************************************************************************************//
 
-//  //Creating ajax function property url and method "GET"
-//  function getMyGifAjax(urlstring) {
-//     $.ajax({
-//       url: urlstring,
-//       method: "GET"
-//     }).then(function (response) {
-//       console.log(response);
-//       response.data
-//       for (var i = 0; i < response.data.length; i++) {
-//         var myGif = response.data[i];
-//         $("#gifs").append("<embed src='" + myGif.embed_url + "' />");
-//       }
-//     });
 
-//   }
 
 //****************************************************************************************//
-
-
 //Setting up all the questions, choices and correct answers in the genZQuestions array.
+//****************************************************************************************//
+
 var genZQuestions = [{
     question: "Generation-Z are?",
     choices: ["Children of the World War I generation", "Vietnam and Korean War generation", "Children born between 1996-2012", "Children in the time of Great Depression"],
     correctAnswer: "Children born between 1996-2012",
-    // image: getMyGifAjax("https://api.giphy.com/v1/gifs/search?q=you+did+it&api_key=dc6zaTOxFJmzC&limit=1"),
+    urlImage: "https://media.giphy.com/media/111ebonMs90YLu/giphy.gif"
+    
 },
 {
     question: "Generation-Z are also called?",
     choices: ["BOOMLETS", "MILLENNIALS", "“latch-key kids”", "Gen-X"],
     correctAnswer: "BOOMLETS",
+    urlImage: "https://media.giphy.com/media/CHSDx4xFXHKEw/giphy.gif"
 },
 {
     question: "Major Characteristics of Generation-Z are?",
     choices: ["expect the world to treat them the best", "self-assured with strong views", "little verbal communication and interpersonal skills", "Very much into labels and brand names"],
     correctAnswer: "little verbal communication and interpersonal skills",
+    urlImage: "https://media.giphy.com/media/AGOPaltgJ2pBC/giphy.gif"
 },
 {
     question: "Percentage of the world population  of Generation-Z?",
-    choices: ["21%", "18%", "100%"],
+    choices: ["21%","50%", "18%", "100%"],
     correctAnswer: "18%",
+    urlImage:"https://media.giphy.com/media/14sy6VGAd4BdKM/giphy.gif"
 },
 {
     question: "Amount they spend annually?",
     choices: ["$51 billion + $170 billion spent by their parents ", "$51 million + $170 million spent by their parents ", "$1 billion + $70 million spent by their parents ", "$12 billion spent by their parents "],
     correctAnswer: "$51 billion + $170 billion spent by their parents ",
+    urlImage:"https://media.giphy.com/media/r7Ql3VIg4x6WA/giphy.gif"
 
 }];
 
 
 //****************************************************************************************//
-
 //trivia game object
+//****************************************************************************************//
+
+
 var triviaGame = {
-    genZQuestions: genZQuestions,
+    // genZQuestions: genZQuestions,
     currentQuestion: 0,
     counter: 30, //showing count for 30 seconds
     correctAnswer: 0,
@@ -80,7 +73,7 @@ var triviaGame = {
         triviaGame.counter--; //starting from 30
         $('#counter').html(triviaGame.counter); //displaying counter on the html
         if (triviaGame.counter <= 0) {
-            console.log("Time Up!");
+            // console.log("Time Up!");
             triviaGame.timeUp();
         }
 
@@ -114,7 +107,7 @@ var triviaGame = {
         $('#subwrapper').append("<h3> The Correct Answer Was: "+ genZQuestions[triviaGame.currentQuestion].correctAnswer+'</h3>');
         //checking if it was the last question.
         if (triviaGame.currentQuestion == genZQuestions.length - 1) {
-            setTimeout(triviaGame.results, 3000); //wait for 3 sec and go to result screen 
+            setTimeout(triviaGame.displayFinalResult, 3000); //wait for 3 sec and go to result screen 
         }
         else //else taking to the next question
         {
@@ -133,7 +126,7 @@ var triviaGame = {
         $('#subwrapper').append("<h3>Incorrect: "+triviaGame.incorrectAnswer+'</h3>');
         $('#subwrapper').append("<h3> Un-Answered: "+triviaGame.unAnswered+'</h3>');
         //appending the Restart Game button.
-        $('#subwrapper').append("<button id='restart'>Restart Game </button>");
+        $('#subwrapper').append("<button id='reset'>Restart Game </button>");
 
     },  
 
@@ -141,7 +134,7 @@ var triviaGame = {
         /*stopping the timer after user clicked*/
         clearInterval(timer);
         //checking if the user clicked the answer button. e=event
-        if ($(e.target).data("name") == genZQuestions[triviaGame.currentQuestion].correctAnswer) {
+        if ($(e.target).data('name').trim() === genZQuestions[triviaGame.currentQuestion].correctAnswer.trim()) {
             //if condition true than run the answeredCorrectly function.
             triviaGame.answeredCorrectly();
         }
@@ -154,15 +147,15 @@ var triviaGame = {
     },
 
     answeredCorrectly: function () {
-        console.log("Correct Answer!");
         clearInterval(timer);
         triviaGame.correctAnswer++; //adding 1 to the correctAnswer counter
         //displaying on the html under subwrapper
         $("#subwrapper").html("<h2>YOU GOT IT RIGHT!</h2>");
+        $("#subwrapper").append("<img  src =" +genZQuestions[triviaGame.currentQuestion].urlImage+ " width='300px'>" );
         //checking if we're on the last question 
         //if at the last question true then go to the resultScreen
-        if (triviaGame.currentQuestion == genZQuestions.length - 1) {
-            setTimeout(triviaGame.results, 3000); //wait for 3 sec and go to result screen 
+        if (triviaGame.currentQuestion == genZQuestions.length-1) {
+            setTimeout(triviaGame.displayFinalResult, 3000); //wait for 3 sec and go to result screen 
         }
         else //else taking to the next question
         {
@@ -172,7 +165,6 @@ var triviaGame = {
     },
 
     answeredIncorrectly: function () {
-        console.log("Incorrect Answer!");
 
         clearInterval(timer);
         triviaGame.incorrectAnswer++; //adding 1 to the  incorrectAnswer counter
@@ -181,10 +173,12 @@ var triviaGame = {
         //displaying the correct answer.
         $('#subwrapper').append("<h3> The Correct Answer Was: "
         + genZQuestions[triviaGame.currentQuestion].correctAnswer+'</h3>');
+       
+    
         //checking if we're on the last question 
         //if at the last question true then go to the resultScreen
         if (triviaGame.currentQuestion == genZQuestions.length - 1) {
-            setTimeout(triviaGame.results, 3000); //wait for 3 sec and go to result screen 
+            setTimeout(triviaGame.displayFinalResult, 3000); //wait for 3 sec and go to result screen 
         }
         else //else taking to the next question
         {
@@ -193,7 +187,9 @@ var triviaGame = {
 
     },
 
+    
     nextQuestion: function() {
+        clearInterval(timer);
         //setting the counter back to 30
         triviaGame.counter = 30;
         //displaying on the html
@@ -204,6 +200,7 @@ var triviaGame = {
     },
 
     resetGame: function () {
+        // clearInterval(timer);
         //when the restart game button is clicked. reset all the counters.
         triviaGame.currentQuestion =0;
         triviaGame.counter =0;

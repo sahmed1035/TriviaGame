@@ -1,39 +1,41 @@
 html,
 body {
-  height: 100%;
+  height: 90%;
 }
 
 body {
   text-align: center;
-  /* background-image: url("../images/tacky.jpg"); */
+  background-image: url("../images/trivia-bg.jpeg");
 }
 
 #wrapper {
+  text-align: center;
   width: 960px;
   height: 95%;
   box-sizing: border-box;
   margin: 2.5% auto;
-  background-color: #fff17a;
+  background-color:blanchedalmond;
 }
 
 #subwrapper {
   position: relative;
   top: 15%;
+ margin-bottom: 15%;
 }
 
 button {
   display: block;
   width: 50%;
   height: 20%;
-  margin: 0 auto;
-  font-size: 42px;
+  margin: 0, auto;
+  font-size: 20px;
   cursor: pointer;
   background: transparent;
-  border: 0;
+  border: 15px;
 }
 
 img {
-  height: 200px;
+  height: 300px;
 }
 
 h1 {
@@ -41,7 +43,8 @@ h1 {
   font-family: Geo, sans-serif;
   font-size: 6.5em;
   font-weight: bold;
-  color: blue;
+  color:green;
+  background-image:url("../images/Trivia-folio.jpeg");
 }
 
 h2 {
@@ -56,11 +59,12 @@ h3 {
 
 #start {
   margin-top: 10%;
-  background: pink;
+  background:blue;
   border: 2px solid blue;
 }
 
 button:hover {
-  background: pink;
+  background:green;
   border: 2px solid blue;
 }
+
