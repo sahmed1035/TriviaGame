@@ -1,3 +1,6 @@
+//styling the start button
+$('#start').css('background-color', 'black');
+$('#start').css('font-size', '44px');
 //making start button disapearning when clicked
 $('#start').on('click', function () {
     $('#start').remove();
@@ -9,8 +12,8 @@ $('#start').on('click', function () {
 $(document).on('click', ".answer-button", function (e) {
     triviaGame.compareUserclick(e);
 })
-//click event for Restart Button
 
+//click event for Restart Button
 $(document).on('click','#reset',function(){
     triviaGame.resetGame();
 })
@@ -70,6 +73,7 @@ var triviaGame = {
 
     ///////Methods////////
     timerCountdown: function () {
+         clearInterval(timer);
         triviaGame.counter--; //starting from 30
         $('#counter').html(triviaGame.counter); //displaying counter on the html
         if (triviaGame.counter <= 0) {
@@ -80,10 +84,11 @@ var triviaGame = {
     },
 
     displayQuestion: function () {
+       
         //every second run the coundown method which is decrease the counter and display it.
         timer = setInterval(triviaGame.timerCountdown, 1000);
         //displaying the timer
-        $('#subwrapper').html("<h2>TIME REMAINING: <span id = 'counter'>30</span> seconds</h2>");
+        $('#subwrapper').html("<h3>TIME REMAINING: <span id = 'counter'>30</span> seconds</h3>");
         //displaying the question to the html page under subwrapper
         $('#subwrapper').append('<h2>' + genZQuestions[triviaGame.currentQuestion].question + '</h2>');
         //displaying all the questions one by one in a loop
@@ -200,7 +205,7 @@ var triviaGame = {
     },
 
     resetGame: function () {
-        // clearInterval(timer);
+        clearInterval(timer);
         //when the restart game button is clicked. reset all the counters.
         triviaGame.currentQuestion =0;
         triviaGame.counter =0;
