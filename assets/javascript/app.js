@@ -1,3 +1,5 @@
+var timer;
+var setTimeoutid;
 //styling the start button
 $('#start').css('background-color', 'black');
 $('#start').css('font-size', '44px');
@@ -33,7 +35,7 @@ var genZQuestions = [{
 },
 {
     question: "Generation-Z are also called?",
-    choices: ["BOOMLETS", "MILLENNIALS", "“latch-key kids”", "Gen-X"],
+    choices: ["BOOMLETS", "MILLENNIALS", "latch-key-kids", "Gen-X"],
     correctAnswer: "BOOMLETS",
     urlImage: "https://media.giphy.com/media/CHSDx4xFXHKEw/giphy.gif"
 },
@@ -59,6 +61,22 @@ var genZQuestions = [{
 
 
 //****************************************************************************************//
+
+// function shuffle(a) {
+//     var j, x, i;
+//     for (i = genZQuestions.choices.length - 1; i > 0; i--) {
+//         j = Math.floor(Math.random() * (i + 1));
+//         x =  genZQuestions.choices[i];
+//         genZQuestions.choices[i] =  genZQuestions.choices[j];
+//         genZQuestions.choices[j] = x;
+//     }
+//     return a;
+// }
+
+
+
+
+
 //trivia game object
 //****************************************************************************************//
 
@@ -73,10 +91,10 @@ var triviaGame = {
 
     ///////Methods////////
     timerCountdown: function () {
-         clearInterval(timer);
+        
         triviaGame.counter--; //starting from 30
         $('#counter').html(triviaGame.counter); //displaying counter on the html
-        if (triviaGame.counter <= 0) {
+        if (triviaGame.counter === 0) {
             // console.log("Time Up!");
             triviaGame.timeUp();
         }
@@ -84,7 +102,7 @@ var triviaGame = {
     },
 
     displayQuestion: function () {
-       
+        clearInterval(timer);
         //every second run the coundown method which is decrease the counter and display it.
         timer = setInterval(triviaGame.timerCountdown, 1000);
         //displaying the timer
@@ -103,7 +121,7 @@ var triviaGame = {
 
     timeUp: function () {
         //clear the timer other will give negative numbers
-        clearInterval(timer);
+        // clearInterval(timer);
         //if the time is up then add 1 to unAnswered counter.
         triviaGame.unAnswered++; 
         //ran out of time message on the html
@@ -111,19 +129,22 @@ var triviaGame = {
         //showing what correct answer would've been if they had got it right.
         $('#subwrapper').append("<h3> The Correct Answer Was: "+ genZQuestions[triviaGame.currentQuestion].correctAnswer+'</h3>');
         //checking if it was the last question.
+        clearTimeout(setTimeoutid);
         if (triviaGame.currentQuestion == genZQuestions.length - 1) {
-            setTimeout(triviaGame.displayFinalResult, 3000); //wait for 3 sec and go to result screen 
+            
+            setTimeoutid=  setTimeout(triviaGame.displayFinalResult, 3000); //wait for 3 sec and go to result screen 
         }
         else //else taking to the next question
         {
-            setTimeout(triviaGame.nextQuestion, 3000) //nextQuestion Function after 3 sec.
+           
+            setTimeoutid= setTimeout(triviaGame.nextQuestion, 3000) //nextQuestion Function after 3 sec.
         }
 
     },
 
     displayFinalResult: function () {
         //clearing timer interval
-        clearInterval(timer);
+        // clearInterval(timer);
         //text for game over.
         $('#subwrapper').html("<h2>ALL DONE!</h2>");
         //displaying number of correct, incorrect and un-answered answers.
@@ -137,7 +158,7 @@ var triviaGame = {
 
     compareUserclick: function (e) {
         /*stopping the timer after user clicked*/
-        clearInterval(timer);
+        // clearInterval(timer);
         //checking if the user clicked the answer button. e=event
         if ($(e.target).data('name').trim() === genZQuestions[triviaGame.currentQuestion].correctAnswer.trim()) {
             //if condition true than run the answeredCorrectly function.
@@ -152,7 +173,7 @@ var triviaGame = {
     },
 
     answeredCorrectly: function () {
-        clearInterval(timer);
+        // clearInterval(timer);
         triviaGame.correctAnswer++; //adding 1 to the correctAnswer counter
         //displaying on the html under subwrapper
         $("#subwrapper").html("<h2>YOU GOT IT RIGHT!</h2>");
@@ -160,18 +181,20 @@ var triviaGame = {
         //checking if we're on the last question 
         //if at the last question true then go to the resultScreen
         if (triviaGame.currentQuestion == genZQuestions.length-1) {
-            setTimeout(triviaGame.displayFinalResult, 3000); //wait for 3 sec and go to result screen 
+            clearTimeout(setTimeoutid);
+            setTimeoutid= setTimeout(triviaGame.displayFinalResult, 3000); //wait for 3 sec and go to result screen 
         }
         else //else taking to the next question
         {
-            setTimeout(triviaGame.nextQuestion, 3000) //nextQuestion Function after 3 sec.
+            clearTimeout(setTimeoutid);
+            setTimeoutid= setTimeout(triviaGame.nextQuestion, 3000) //nextQuestion Function after 3 sec.
         }
 
     },
 
     answeredIncorrectly: function () {
 
-        clearInterval(timer);
+        // clearInterval(timer);
         triviaGame.incorrectAnswer++; //adding 1 to the  incorrectAnswer counter
         //displaying on the html under subwrapper
         $("#subwrapper").html("<h2>YOU GOT IT WRONG!</h2>");
@@ -183,18 +206,20 @@ var triviaGame = {
         //checking if we're on the last question 
         //if at the last question true then go to the resultScreen
         if (triviaGame.currentQuestion == genZQuestions.length - 1) {
-            setTimeout(triviaGame.displayFinalResult, 3000); //wait for 3 sec and go to result screen 
+           clearTimeout(setTimeoutid);
+            setTimeoutid= setTimeout(triviaGame.displayFinalResult, 3000); //wait for 3 sec and go to result screen 
         }
         else //else taking to the next question
         {
-            setTimeout(triviaGame.nextQuestion, 3000) //nextQuestion Function after 3 sec.
+            clearTimeout(setTimeoutid);
+           setTimeoutid= setTimeout(triviaGame.nextQuestion, 3000) //nextQuestion Function after 3 sec.
         }
 
     },
 
     
     nextQuestion: function() {
-        clearInterval(timer);
+        // clearInterval(timer);
         //setting the counter back to 30
         triviaGame.counter = 30;
         //displaying on the html
@@ -205,13 +230,15 @@ var triviaGame = {
     },
 
     resetGame: function () {
-        clearInterval(timer);
+        // clearInterval(timer);
+        
         //when the restart game button is clicked. reset all the counters.
         triviaGame.currentQuestion =0;
-        triviaGame.counter =0;
+        triviaGame.counter =30;
         triviaGame.correctAnswer =0;
         triviaGame.incorrectAnswer = 0;
         triviaGame.unAnswered = 0;
+        
         //displayQuestions function
         triviaGame.displayQuestion();
 
